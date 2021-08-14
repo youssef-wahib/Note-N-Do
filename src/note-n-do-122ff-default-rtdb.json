@@ -1,0 +1,19 @@
+{
+  "Notes" : {
+    "1": {
+      "note": "this is a note test",
+      "data": "11/8/21"
+    },
+    "2": {
+      "note": "this is another note test",
+      "data": "11/8/21"
+    }
+  },
+  "Todos" : {
+    "1": {
+      "todo": "this is a todo test",
+      "data": "11/8/21",
+      "status": false
+    }
+  }
+}
