@@ -1,23 +1,20 @@
 import { createTheme } from "@material-ui/core/styles";
-import { red } from "@material-ui/core/colors";
 
 // Create a theme instance.
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#0f0e17",
+      main: "#e5ecf6",
       second: "#e7f1ea",
-      Button: "#688d73",
+      Button: "#1e264f",
       ButtonHover: "#acc2b1",
     },
     secondary: {
-      main: "#8bd3dd",
-    },
-    error: {
-      main: red.A400,
+      main: "#2f3d80",
+      hover: "#fff",
     },
     background: {
-      default: "#e7f1ea",
+      default: "#e5ecf6",
     },
   },
 });
