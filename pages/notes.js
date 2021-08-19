@@ -2,9 +2,8 @@ import React from "react";
 import Head from "next/head";
 import firebase from "../utils/firebase";
 import { Container, Typography, Paper, makeStyles } from "@material-ui/core";
-// import firebase from "firebase";
-import WritetoFirestore from "../utils/WritetoFirestore";
-import ReadtoFirestore from "../utils/ReadtoFirestore";
+import WriteNotes from "../utils/WriteNotes";
+import ReadNotes from "../utils/ReadNotes";
 firebase();
 
 const useStyles = makeStyles((theme) => ({
@@ -14,13 +13,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#fffffe",
   },
 }));
-// const database = firebase.database();
-
-// export const getStaticProps = async () => {
-//   const snapshot = await firestore.collection("Notes").get();
-//
-//   snapshot.docs.forEach((docs) => console.log(doc.data()));
-// };
 
 export default function Notes() {
   const classes = useStyles();
@@ -35,16 +27,11 @@ export default function Notes() {
       </Head>
       <Container>
         <Paper className={classes.frame}>
-          <Typography color={"primary"} variant={"h3"}>
+          <Typography color={"primary"} variant={"h2"} align={"center"}>
             My Notes
           </Typography>
-          <WritetoFirestore />
-          <ReadtoFirestore />
-          {/*{notes.map((note) => (*/}
-          {/*  <Paper key={note.id}>*/}
-          {/*    <Typography>{note.name}</Typography>*/}
-          {/*  </Paper>*/}
-          {/*))}*/}
+          <WriteNotes />
+          <ReadNotes />
         </Paper>
       </Container>
     </>

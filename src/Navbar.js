@@ -19,67 +19,59 @@ export default function Navbar({ children }) {
   const { user, logout } = useUser();
   if (user) {
     return (
-      <AppBar elevation={0} className={classes.root} position={"static"}>
-        <Toolbar>
-          <Grid container alignContent={"center"} spacing={3} xl={12}>
-            <Grid item>
-              <Image src={Logo} alt={"logo"} />
-            </Grid>
-            <Grid item>
-              <Link href="/">
-                <Button color="inherit">Home</Button>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/notes">
-                <Button color="inherit">Notes</Button>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/todolist">
-                <Button color="inherit">To Do List</Button>
-              </Link>
-            </Grid>
+      <Toolbar>
+        <Grid container alignContent={"center"} spacing={3} xl={12}>
+          <Grid item>
+            <Image src={Logo} alt={"logo"} />
           </Grid>
-          <Grid container className={classes.bar}>
-            <Button
-              variant={"contained"}
-              disableElevation
-              color={"secondary"}
-              onClick={() => logout()}
-            >
-              Log out
-            </Button>
+          <Grid item>
+            <Link href="/">
+              <Button color="inherit">Home</Button>
+            </Link>
           </Grid>
-        </Toolbar>
-      </AppBar>
+          <Grid item>
+            <Link href="/notes">
+              <Button color="inherit">Notes</Button>
+            </Link>
+          </Grid>
+          <Grid item>
+            <Link href="/todolist">
+              <Button color="inherit">To Do List</Button>
+            </Link>
+          </Grid>
+        </Grid>
+        <Grid container className={classes.bar}>
+          <Button
+            variant={"contained"}
+            disableElevation
+            color={"secondary"}
+            onClick={() => logout()}
+          >
+            Log out
+          </Button>
+        </Grid>
+      </Toolbar>
     );
   } else
     return (
-      <AppBar elevation={0} className={classes.root} position={"static"}>
-        <Toolbar>
-          <Grid container alignContent={"center"} spacing={3} xl={12}>
-            <Grid item>
-              <Image src={Logo} alt={"logo"} />
-            </Grid>
-            <Grid item>
-              <Link href="/">
-                <Button color="inherit">Home</Button>
-              </Link>
-            </Grid>
+      <Toolbar>
+        <Grid container alignContent={"center"} spacing={3} xl={12}>
+          <Grid item>
+            <Image src={Logo} alt={"logo"} />
           </Grid>
-          <Grid container className={classes.bar}>
-            <Link href={"/auth"}>
-              <Button
-                variant={"contained"}
-                color={"secondary"}
-                disableElevation
-              >
-                Log in
-              </Button>
+          <Grid item>
+            <Link href="/">
+              <Button color="inherit">Home</Button>
             </Link>
           </Grid>
-        </Toolbar>
-      </AppBar>
+        </Grid>
+        <Grid container className={classes.bar}>
+          <Link href={"/auth"}>
+            <Button variant={"contained"} color={"secondary"} disableElevation>
+              Log in
+            </Button>
+          </Link>
+        </Grid>
+      </Toolbar>
     );
 }
