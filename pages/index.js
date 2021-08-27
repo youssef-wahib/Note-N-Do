@@ -20,7 +20,7 @@ export default function Index() {
 
   if (user)
     return (
-      <Container container maxWidth="lg">
+      <Container maxWidth="lg">
         <Paper className={classes.paperStyle}>
           <Typography align={"center"} variant="h1">
             NOTE'N'DO
@@ -37,7 +37,7 @@ export default function Index() {
     );
   else
     return (
-      <Container container maxWidth="lg">
+      <Container maxWidth="lg">
         <Paper className={classes.paperStyle}>
           <Typography align={"center"} variant="h1">
             NOTE'N'DO

@@ -10,8 +10,11 @@ import {
   Tabs,
   Tab,
   Box,
+  IconButton,
+  Grid,
 } from "@material-ui/core";
-import PropTypes, { object } from "prop-types";
+import DeleteIcon from "@material-ui/icons/Delete";
+import PropTypes from "prop-types";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -23,11 +26,7 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={4}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={2}>{children}</Box>}
     </div>
   );
 }
@@ -47,42 +46,77 @@ const useStyles = makeStyles((theme) => ({
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
   },
+  notes: {
+    width: "100%",
+  },
 }));
 
 TabPanel.propTypes = {
   children: PropTypes.node,
-  //  color:PropTypes.any.isRequired,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };
 
 export default function ReadNotes() {
-  const db = firebase.database();
   const { user } = useUser();
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [load, setLoad] = useState(true);
-
+  const [userNotes, setUserNotes] = useState({});
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setLoad(true);
   };
-  let userNotes = {};
+
   useEffect(() => {
     try {
       setLoad(false);
-      db.ref(`users/${user.id}/Notes/`).on("value", (snapshot) => {
-        userNotes = Object.entries(snapshot.val());
-      });
+      firebase
+        .database()
+        .ref(`users/${user.id}/Notes/`)
+        .on("value", (snapshot) => {
+          setUserNotes(Object.entries(snapshot.val()));
+        });
     } catch (e) {
       console.log(e);
     }
-    tabNotes();
   }, [load]);
+  const dateHandler = (UNIX_timestamp) => {
+    const a = new Date(UNIX_timestamp * 1000);
+    console.log(a.toUTCString());
+    let months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    let month = months[a.getMonth()];
+    let date = a.getDate();
+    let hour = a.getHours();
+    let min = a.getMinutes();
 
+    return `${hour} : ${min} - ${date} / ${month}`;
+  };
+  const deleteNoteHandler = (key, index) => {
+    firebase
+      .database()
+      .ref(`users/${user.id}/Notes/${key}`)
+      .remove()
+      .then(() => {
+        setValue(index - 1);
+        console.warn("Note deleted successfully.");
+      });
+  };
   const tabLabels = () => {
     return Object.values(userNotes).map((data, index) => {
-      // console.log(Object.values(data[1])[0]);
       return (
         <Tab
           key={index}
@@ -93,11 +127,36 @@ export default function ReadNotes() {
     });
   };
   const tabNotes = () => {
-    Object.values(userNotes).map((data, index) => {
-      console.log(Object.values(data[1])[1]);
+    return Object.values(userNotes).map((data, index) => {
       return (
-        <TabPanel key={index} value={value} index={index}>
-          Object.values(data[1])[1]
+        <TabPanel
+          key={index}
+          value={value}
+          index={index}
+          className={classes.notes}
+        >
+          <Typography variant={"h5"}>{Object.values(data[1])[1]}</Typography>
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="flex-end"
+          >
+            <Typography display={"inline"} variant={"h6"}>
+              {dateHandler(Object.values(data[1])[2])}
+            </Typography>
+            <IconButton
+              style={{
+                margin: -7,
+              }}
+              color={"primary"}
+              edge={"end"}
+              aria-label="delete"
+              onClick={() => deleteNoteHandler(data[0], index)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
         </TabPanel>
       );
     });
@@ -105,45 +164,18 @@ export default function ReadNotes() {
   return (
     <Container maxWidth={"xl"}>
       <Paper variant={"outlined"}>
-        <Typography align={"center"} variant={"h3"}>
-          Here you can view your Notes
-        </Typography>
         <div className={classes.root}>
           <Tabs
+            style={{ width: "30%" }}
             orientation="vertical"
             value={value}
             onChange={handleChange}
             aria-label="Vertical tabs example"
             className={classes.tabs}
           >
-            {Object.values(userNotes).map((data, index) => {
-              // console.log(Object.values(data[1])[0]);
-              return (
-                <Tab
-                  key={index}
-                  label={Object.values(data[1])[0]}
-                  {...a11yProps(index)}
-                />
-              );
-            })}
-
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
+            {tabLabels()}
           </Tabs>
-          {Object.values(userNotes).map((data, index) => {
-            // console.log(Object.values(data[1])[1]);
-            return (
-              <TabPanel key={index} value={value} index={index}>
-                Object.values(data[1])[1]
-              </TabPanel>
-            );
-          })}
-          <TabPanel value={value} index={0}>
-            Item sdfhakljsdhfjk
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            Item Two
-          </TabPanel>
+          {tabNotes()}
         </div>
       </Paper>
     </Container>

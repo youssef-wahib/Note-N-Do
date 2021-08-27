@@ -28,11 +28,6 @@ export default function WriteNotes() {
   const [note, setNote] = useState("");
   const db = firebase.database();
   function writeUserData() {
-    // const FormattedTime = (date) => {
-    //   const d = new Date(date * 1000);
-    //   console.log(d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-    // };
-
     db.ref(`users/${user.id}/Notes/`)
       .push({
         Label: label,
@@ -79,7 +74,6 @@ export default function WriteNotes() {
             onClick={() => {
               if (label !== "" && note !== "") {
                 writeUserData();
-                window.location.reload();
               }
             }}
           >
