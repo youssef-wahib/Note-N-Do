@@ -82,8 +82,7 @@ export default function ReadNotes() {
     }
   }, [load]);
   const dateHandler = (UNIX_timestamp) => {
-    const a = new Date(UNIX_timestamp * 1000);
-    console.log(a.toUTCString());
+    let a = new Date(UNIX_timestamp);
     let months = [
       "Jan",
       "Feb",

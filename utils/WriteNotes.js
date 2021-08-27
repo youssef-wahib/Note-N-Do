@@ -9,6 +9,11 @@ import {
   Paper,
   TextField,
   Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +32,7 @@ export default function WriteNotes() {
   const [label, setLabel] = useState("");
   const [note, setNote] = useState("");
   const db = firebase.database();
+  const [dialogOpen, setDialogOpen] = useState(false);
   function writeUserData() {
     db.ref(`users/${user.id}/Notes/`)
       .push({
@@ -36,6 +42,34 @@ export default function WriteNotes() {
       })
       .then(() => console.log("data was sent to database"));
   }
+  const emptyInputHandler = () => {
+    return (
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Incomplete input"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Please enter both note label and note content.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant={"contained"}
+            onClick={() => {
+              setDialogOpen(false);
+            }}
+            color="secondary"
+          >
+            Return
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
   return (
     <Container maxWidth={"xl"}>
       <Paper variant={"outlined"} className={classes.containerStyle}>
@@ -52,7 +86,6 @@ export default function WriteNotes() {
               setLabel(e.target.value);
             }}
           />
-
           <TextField
             validators={["required"]}
             required
@@ -67,13 +100,18 @@ export default function WriteNotes() {
               setNote(e.target.value);
             }}
           />
+          {emptyInputHandler()}
           <Button
             color={"secondary"}
             variant={"contained"}
             className={classes.margining}
             onClick={() => {
-              if (label !== "" && note !== "") {
+              if (label && note) {
                 writeUserData();
+                setNote("");
+                setLabel("");
+              } else {
+                setDialogOpen(true);
               }
             }}
           >
