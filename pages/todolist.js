@@ -1,8 +1,24 @@
 import React from "react";
-import { Container, Typography, Box, Button } from "@material-ui/core";
+import {
+  Container,
+  Typography,
+  Button,
+  Paper,
+  makeStyles,
+} from "@material-ui/core";
 import Head from "next/head";
+import WritetoFirestore from "../utils/WritetoFirestore";
+import ReadfromFirestore from "../utils/ReadfromFirestore";
+const useStyles = makeStyles((theme) => ({
+  frame: {
+    padding: 50,
+    marginTop: 20,
+    color: "#fffffe",
+  },
+}));
 
 export default function About() {
+  const classes = useStyles();
   return (
     <>
       <Head>
@@ -13,13 +29,13 @@ export default function About() {
         />
       </Head>
       <Container maxWidth="lg">
-        <Typography variant={"h2"}> notes</Typography>
-        <Typography variant={"body1"}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam
-          aliquid, architecto deserunt numquam quidem sapiente soluta vitae?
-          Architecto molestias natus obcaecati unde voluptatum? Atque
-          consectetur dolor illo officia quis voluptate!
-        </Typography>
+        <Paper className={classes.frame}>
+          <Typography variant={"h2"} align={"center"} color={"primary"}>
+            MY TO DO LIST
+          </Typography>
+          <WritetoFirestore />
+          <ReadfromFirestore />
+        </Paper>
       </Container>
     </>
   );

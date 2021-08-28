@@ -15,7 +15,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-
+import AddBoxIcon from "@material-ui/icons/AddBox";
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
     marginTop: 20,
@@ -102,6 +102,8 @@ export default function WriteNotes() {
           />
           {emptyInputHandler()}
           <Button
+            size={"large"}
+            endIcon={<AddBoxIcon />}
             color={"secondary"}
             variant={"contained"}
             className={classes.margining}

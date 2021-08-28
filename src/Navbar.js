@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   bar: {
     flexGrow: 1,
     flexDirection: "row-reverse",
+    width: "20%",
   },
 }));
 export default function Navbar({ children }) {
@@ -20,7 +21,13 @@ export default function Navbar({ children }) {
   if (user) {
     return (
       <Toolbar>
-        <Grid container alignContent={"center"} spacing={3} xl={12}>
+        <Grid
+          container
+          direction={"row"}
+          alignContent={"center"}
+          spacing={3}
+          xl={12}
+        >
           <Grid item>
             <Image src={Logo} alt={"logo"} />
           </Grid>
@@ -40,7 +47,7 @@ export default function Navbar({ children }) {
             </Link>
           </Grid>
         </Grid>
-        <Grid container className={classes.bar}>
+        <Grid container className={classes.bar} style={{}}>
           <Button
             variant={"contained"}
             disableElevation
