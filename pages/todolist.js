@@ -8,8 +8,9 @@ import {
 } from "@material-ui/core";
 import Head from "next/head";
 import WritetoFirestore from "../utils/WritetoFirestore";
-import ReadfromFirestore from "../utils/ReadfromFirestore";
+import TodoList from "../utils/TodoList";
 import { useUser } from "../utils/useUser";
+
 const useStyles = makeStyles((theme) => ({
   frame: {
     padding: 50,
@@ -17,9 +18,11 @@ const useStyles = makeStyles((theme) => ({
     color: "#fffffe",
   },
 }));
-const user = useUser();
+
 export default function About() {
+  const { user } = useUser();
   const classes = useStyles();
+
   return (
     <>
       <Head>
@@ -35,7 +38,8 @@ export default function About() {
             MY TO DO LIST
           </Typography>
           <WritetoFirestore />
-          {user.id && <ReadfromFirestore userId={user.id} />}
+
+          {user?.id && <TodoList userId={user.id} />}
         </Paper>
       </Container>
     </>
