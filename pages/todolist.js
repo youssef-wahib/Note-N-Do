@@ -9,6 +9,7 @@ import {
 import Head from "next/head";
 import WritetoFirestore from "../utils/WritetoFirestore";
 import ReadfromFirestore from "../utils/ReadfromFirestore";
+import { useUser } from "../utils/useUser";
 const useStyles = makeStyles((theme) => ({
   frame: {
     padding: 50,
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#fffffe",
   },
 }));
-
+const user = useUser();
 export default function About() {
   const classes = useStyles();
   return (
@@ -34,7 +35,7 @@ export default function About() {
             MY TO DO LIST
           </Typography>
           <WritetoFirestore />
-          <ReadfromFirestore />
+          {user.id && <ReadfromFirestore userId={user.id} />}
         </Paper>
       </Container>
     </>

@@ -1,35 +1,29 @@
-import firebase from "firebase/app";
+import firebase from "firebase";
 import "firebase/firestore";
+import {
+  useCollection,
+  useCollectionDataOnce,
+  useDocumentOnce,
+} from "react-firebase-hooks/firestore";
 import React, { useEffect, useState } from "react";
 import { useUser } from "./useUser";
 import {
   makeStyles,
   Paper,
   Button,
-  TextField,
   Typography,
   Container,
 } from "@material-ui/core";
-
-export default function ReadfromFirestore() {
-  const [load, setLoad] = useState(true);
-  const [todos, setTodos] = useState({});
-  const { user } = useUser();
-  useEffect(() => {
-    setLoad(false);
-    try {
-      firebase
-        .firestore()
-        .collection("myCollection")
-        .doc(user.id)
-        .get()
-        .then((doc) => {
-          console.log(doc.data());
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [load]);
+const { user } = useUser();
+export default function ReadfromFirestore({ userId }) {
+  const [todos, loading, error] = useCollectionDataOnce(
+    firebase
+      .firestore()
+      .collection("myCollection")
+      .doc(user.id)
+      .collection("TODOS")
+  );
+  console.log(todos);
 
   return (
     <Container maxWidth={"xl"}>
