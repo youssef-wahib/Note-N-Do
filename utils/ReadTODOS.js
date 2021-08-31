@@ -1,5 +1,3 @@
-import firebase from "firebase";
-import "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import React, { useState } from "react";
 import {
@@ -16,7 +14,7 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import timeConverter from "./timeConverter";
-
+import { firestore } from "./db";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -36,7 +34,7 @@ export default function ReadTODOS({ userId }) {
   const classes = useStyles();
   const [checked, setChecked] = useState([0]);
   const [todos] = useCollection(
-    firebase.firestore().collection(`myCollection/${userId}/TODOS`)
+    firestore.collection(`myCollection/${userId}/TODOS`)
   );
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -50,8 +48,7 @@ export default function ReadTODOS({ userId }) {
     setChecked(newChecked);
   };
   const deleteTodoHandler = (docId) => {
-    firebase
-      .firestore()
+    firestore
       .collection(`myCollection/${userId}/TODOS`)
       .doc(docId)
       .delete()

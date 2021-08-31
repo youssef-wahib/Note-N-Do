@@ -1,5 +1,4 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
+import { firestore } from "./db";
 import React, { useState } from "react";
 import {
   makeStyles,
@@ -28,8 +27,7 @@ export default function WriteTODOS({ userId }) {
   const classes = useStyles();
   const [todo, setTodo] = useState("");
   const sendData = () => {
-    firebase
-      .firestore()
+    firestore
       .collection(`myCollection/${userId}/TODOS`)
       .doc()
       .set({
