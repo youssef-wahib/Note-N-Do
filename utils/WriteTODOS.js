@@ -1,4 +1,5 @@
-import { firestore } from "./db";
+import firebase from "firebase/app";
+import "firebase/firestore";
 import React, { useState } from "react";
 import {
   makeStyles,
@@ -27,12 +28,13 @@ export default function WriteTODOS({ userId }) {
   const classes = useStyles();
   const [todo, setTodo] = useState("");
   const sendData = () => {
-    firestore
+    firebase
+      .firestore()
       .collection(`myCollection/${userId}/TODOS`)
       .doc()
       .set({
         Todo: todo,
-        Time: firestore.serverTimestamp(),
+        Time: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((r) => {
         setTodo("");
