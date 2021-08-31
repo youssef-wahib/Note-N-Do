@@ -15,6 +15,8 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PropTypes from "prop-types";
+import timeConverter from "./timeConverter";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -75,42 +77,21 @@ export default function ReadNotes() {
         .database()
         .ref(`users/${user.id}/Notes/`)
         .on("value", (snapshot) => {
-          setUserNotes(Object.entries(snapshot.val()));
+          if (snapshot.val()) {
+            setUserNotes(Object.entries(snapshot.val()));
+          }
         });
     } catch (e) {
       console.log(e);
     }
   }, [load]);
-  const dateHandler = (UNIX_timestamp) => {
-    let a = new Date(UNIX_timestamp);
-    let months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    let month = months[a.getMonth()];
-    let date = a.getDate();
-    let hour = a.getHours();
-    let min = a.getMinutes();
-
-    return `${hour} : ${min} - ${date} / ${month}`;
-  };
   const deleteNoteHandler = (key, index) => {
     firebase
       .database()
       .ref(`users/${user.id}/Notes/${key}`)
       .remove()
       .then(() => {
-        setValue(index - 1);
+        index ? setValue(index - 1) : setValue(index);
         console.warn("Note deleted successfully.");
       });
   };
@@ -126,7 +107,7 @@ export default function ReadNotes() {
     });
   };
   const tabNotes = () => {
-    return Object.values(userNotes).map((data, index) => {
+    return Object.values(userNotes)?.map((data, index) => {
       return (
         <TabPanel
           key={index}
@@ -142,7 +123,7 @@ export default function ReadNotes() {
             alignItems="flex-end"
           >
             <Typography display={"inline"} variant={"h6"}>
-              {dateHandler(Object.values(data[1])[2])}
+              {timeConverter(Object.values(data[1])[2])}
             </Typography>
             <IconButton
               style={{

@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  Container,
-  Typography,
-  Button,
-  Paper,
-  makeStyles,
-} from "@material-ui/core";
+import { Container, makeStyles, Paper, Typography } from "@material-ui/core";
 import Head from "next/head";
-import WritetoFirestore from "../utils/WritetoFirestore";
-import ReadfromFirestore from "../utils/ReadfromFirestore";
+import WriteTODOS from "../utils/WriteTODOS";
+import ReadTODOS from "../utils/ReadTODOS";
 import { useUser } from "../utils/useUser";
+
 const useStyles = makeStyles((theme) => ({
   frame: {
     padding: 50,
@@ -17,11 +12,12 @@ const useStyles = makeStyles((theme) => ({
     color: "#fffffe",
   },
 }));
-const user = useUser();
+
 export default function About() {
+  const { user } = useUser();
   const classes = useStyles();
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>NOTE'N'DO | TO DO LIST</title>
         <meta
@@ -34,10 +30,10 @@ export default function About() {
           <Typography variant={"h2"} align={"center"} color={"primary"}>
             MY TO DO LIST
           </Typography>
-          <WritetoFirestore />
-          {user.id && <ReadfromFirestore userId={user.id} />}
+          {user?.id && <WriteTODOS userId={user.id} />}
+          {user?.id && <ReadTODOS userId={user.id} />}
         </Paper>
       </Container>
-    </>
+    </React.Fragment>
   );
 }

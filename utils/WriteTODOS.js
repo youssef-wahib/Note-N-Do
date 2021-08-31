@@ -1,7 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import React, { useState } from "react";
-import { useUser } from "./useUser";
 import {
   makeStyles,
   Paper,
@@ -25,26 +24,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function WritetoFirestore() {
-  const { user } = useUser();
+export default function WriteTODOS({ userId }) {
   const classes = useStyles();
   const [todo, setTodo] = useState("");
   const sendData = () => {
-    try {
-      firebase
-        .firestore()
-        .collection("myCollection")
-        .doc(user.id)
-        .collection("TODOS")
-        .doc()
-        .set({
-          Todo: todo,
-          Time: firebase.firestore.FieldValue.serverTimestamp(),
-        })
-        .then((r) => setTodo(""));
-    } catch (error) {
-      console.log(error);
-    }
+    firebase
+      .firestore()
+      .collection(`myCollection/${userId}/TODOS`)
+      .doc()
+      .set({
+        Todo: todo,
+        Time: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then((r) => {
+        setTodo("");
+      });
   };
 
   return (
