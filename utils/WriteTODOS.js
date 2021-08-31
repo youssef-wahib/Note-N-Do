@@ -32,7 +32,7 @@ export default function WriteTODOS({ userId }) {
       .doc()
       .set({
         Todo: todo,
-        Time: firebase.firestore.FieldValue.serverTimestamp(),
+        Time: firestore.serverTimestamp(),
       })
       .then((r) => {
         setTodo("");
