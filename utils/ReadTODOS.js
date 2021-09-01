@@ -61,29 +61,29 @@ export default function ReadTODOS({ userId }) {
       <Paper variant={"outlined"}>
         <List className={classes.root}>
           {todos?.docs?.map((doc) => {
-            const { Todo: todo } = doc.data();
-            const {
-              Time: { seconds: time },
-            } = doc.data();
+            const { Todo: todo, Time } = doc.data();
+            const seconds = Time?.seconds ?? Date.now() / 1000;
             return (
               <ListItem
                 key={doc.id}
                 dense
                 button
-                onClick={handleToggle(time)}
-                className={checked.indexOf(time) !== -1 ? classes.doneTodo : ""}
+                onClick={handleToggle(seconds)}
+                className={
+                  checked.indexOf(seconds) !== -1 ? classes.doneTodo : ""
+                }
               >
                 <ListItemIcon>
                   <Checkbox
                     edge="start"
-                    checked={checked.indexOf(time) !== -1}
+                    checked={checked.indexOf(seconds) !== -1}
                     tabIndex={-1}
                     disableRipple
                   />
                 </ListItemIcon>
                 <ListItemText
                   primary={todo}
-                  secondary={timeConverter(time * 1000)}
+                  secondary={timeConverter(seconds * 1000)}
                 />
                 <ListItemSecondaryAction>
                   <IconButton
